@@ -1,0 +1,375 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<div id="drawTable">
+    @if (ViewData["HourlyEmployee"] != null)
+    {
+        if (ViewData.Values != null && ViewData.Values.Count() > 0)
+        {
+            List<HourlyEmployee> hEmployee = ViewData["HourlyEmployee"] as List<HourlyEmployee>;
+            float maxDays = hEmployee[0].MaxVacationDays;
+            <input type="hidden" class="maxVac hEmpl" value=@maxDays />
+            <input type="hidden" class="maxWork" value=@hEmployee[0].MaxWorkDays />
+
+        }
+    }
+    @if (ViewData["SalariedEmployee"] != null)
+    {
+        if (ViewData.Values != null && ViewData.Values.Count() > 0)
+        {
+            List<SalariedEmployee> sEmployee = ViewData["SalariedEmployee"] as List<SalariedEmployee>;
+            float maxDays = sEmployee[0].MaxVacationDays;
+            <input type="hidden" class="maxVac sEmpl" value=@maxDays />
+            <input type="hidden" class="maxWork" value=@sEmployee[0].MaxWorkDays />
+
+        }
+    }
+
+    @if (ViewData["Manager"] != null)
+    {
+        if (ViewData.Values != null && ViewData.Values.Count() > 0)
+        {
+            List<Manager> mEmployee = ViewData["Manager"] as List<Manager>;
+            float maxDays = mEmployee[0].MaxVacationDays;
+            <input type="hidden" class="maxVac mEmpl" value=@maxDays />
+            <input type="hidden" class="maxWork" value=@mEmployee[0].MaxWorkDays />
+
+        }
+    }
+    <table style1="border:1px solid lightgrey;border-collapse: collapse" class="drawTable">
+        <tr><td colspan="8"><b>Hourly Employees:</b></td></tr>
+        <tr>
+            <th> Id </th>
+            <th>Full Name </th>
+            <th>Days Worked </th>
+            <th>Vacation Earned </th>
+            <th>Vacation Used </th>
+            <th>Add Work Days </th>
+            <th>Add Vacation Used </th>
+        </tr>
+        @if (ViewData["HourlyEmployee"] != null)
+        {
+            @if (ViewData.Values != null && ViewData.Values.Count() > 0)
+            {
+                @foreach (var item in ViewData["HourlyEmployee"] as List<HourlyEmployee>)
+                {
+                    <tr class="hourly">
+                        <td class="emId">@item.ID</td>
+                        <td class="fName">@item.FullName</td>
+                        <td class="wDays">@item.NoOfWorkDays</td>
+                        <td class="vDays">@item.NoOfVacationDays</td>
+                        <td class="vADays">@item.NoOfVacationDaysAvailed</td>
+                        <td>
+                            <input type="text" class="work" onchange1="return validateNumber(this);" />
+                            @Html.ActionLink("ADD", null, null, null,htmlAttributes:new { @id = "submit"+@item.ID,@onclick="validateNumber(this,0,0); return false; "})
+                        </td>
+                        <td>
+                            <input type="text" class="vacation" onchange1="validateNumber(this);" />
+                            @Html.ActionLink("ADD", null, null, null,htmlAttributes:new { @id = "submit"+@item.ID,@onclick="validateNumber(this,1,0); return false;" })
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </table>
+
+    &nbsp;
+    <table style1="border:1px solid lightgrey;border-collapse: collapse" class="drawTable">
+        <tr><td colspan="8"><b>Salaried Employees:</b></td></tr>
+        <tr>
+            <th> Id </th>
+            <th>Full Name </th>
+            <th>Days Worked </th>
+            <th>Vacation Earned </th>
+            <th>Vacation Used </th>
+            <th>Add Work Days </th>
+            <th>Add Vacation Used </th>
+        </tr>
+        @if (ViewData["SalariedEmployee"] != null)
+        {
+            @if (ViewData.Values != null && ViewData.Values.Count() > 0)
+            {
+                @foreach (var item in ViewData["SalariedEmployee"] as List<SalariedEmployee>)
+                {
+                    <tr class="salary">
+                        <td class="emId">@item.ID</td>
+                        <td>@item.FullName</td>
+                        <td class="wDays">@item.NoOfWorkDays</td>
+                        <td class="vDays">@item.NoOfVacationDays</td>
+                        <td class="vADays">@item.NoOfVacationDaysAvailed</td>
+                        <td>
+                            <input type="text" class="work" onchange1="return validateNumber(this);" />
+                            @Html.ActionLink("ADD", null, null, null,htmlAttributes:new { @id = "submit"+@item.ID,@onclick="validateNumber(this,0,1); return false; "})
+                        </td>
+                        <td>
+                            <input type="text" class="vacation" onchange1="validateNumber(this);" />
+                            @Html.ActionLink("ADD", null, null, null,htmlAttributes:new { @id = "submit"+@item.ID,@onclick="validateNumber(this,1,1); return false;" })
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </table>
+    &nbsp;
+
+    <table style1="border:1px solid lightgrey;border-collapse: collapse" class="drawTable">
+        <tr><td colspan="8"><b>Manager Employees:</b></td></tr>
+        <tr>
+            <th> Id </th>
+            <th>Full Name </th>
+            <th>Days Worked </th>
+            <th>Vacation Earned </th>
+            <th>Vacation Used </th>
+            <th>Add Work Days </th>
+            <th>Add Vacation Used </th>
+        </tr>
+        @if (ViewData["Manager"] != null)
+        {
+            @if (ViewData.Values != null && ViewData.Values.Count() > 0)
+            {
+                @foreach (var item in ViewData["Manager"] as List<Manager>)
+                {
+                    <tr class="manager">
+                        <td class="emId">@item.ID</td>
+                        <td>@item.FullName</td>
+                        <td class="wDays">@item.NoOfWorkDays</td>
+                        <td class="vDays">@item.NoOfVacationDays</td>
+                        <td class="vADays">@item.NoOfVacationDaysAvailed</td>
+                        <td>
+                            <input type="text" class="work" onchange1="return validateNumber(this);" />
+                            @Html.ActionLink("ADD", null, null, null,htmlAttributes:new { @id = "submit"+@item.ID,@onclick="validateNumber(this,0,2); return false; "})
+                        </td>
+                        <td>
+                            <input type="text" class="vacation" onchange1="validateNumber(this);" />
+                            @Html.ActionLink("ADD", null, null, null,htmlAttributes:new { @id = "submit"+@item.ID,@onclick="validateNumber(this,1,2); return false;" })
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </table>
+
+</div>
+<style>
+    #drawTable table {
+        border-collapse: collapse;
+    }
+
+    tr th {
+        border: 1px solid black;
+    }
+
+    td {
+        border: 1px solid black;
+    }
+
+    input[type="text"] {
+        width: 50px;
+    }
+</style>
+
+<script type="text/javascript">
+
+    //**********Add Work Days****************************
+    function empAddWork(elm, empType) {
+        var empJson = GetEmpData(elm, empType,0);
+        var getempJson = {
+            "empJson": empJson
+        };
+        var dataType1 = 'application/json; charset=utf-8';
+        $.ajax({
+            type: "POST",
+            url: "/Home/AddWork",
+            data: getempJson,
+            success: function (data) {
+                updateWorkForEmployee(elm, data);
+            },
+            failure: function (response) {
+                console.log(response.responseText);
+            },
+            error: function (response) {
+                console.log(response.responseText);
+            }
+        });
+    }
+    //**********Add Vacation Days****************************
+    function empAddVacation(elm, empType) {
+        var empJson = GetEmpData(elm, empType,1);
+        var getempJson = {
+            "empJson": empJson
+        };
+        var dataType1 = 'application/json; charset=utf-8';
+        $.ajax({
+            type: "POST",
+            url: "/Home/AddVacation",
+            data: getempJson,
+            success: function (data) {
+                updateVacationForEmployee(elm, data);
+            },
+            failure: function (response) {
+                console.log(response.responseText);
+            },
+            error: function (response) {
+                console.log(response.responseText);
+            }
+        });
+    }
+    //**********Refresh Work Days****************************
+    function updateWorkForEmployee(elm,data)
+    {
+        $("input.work").val('');
+        $(elm).closest('tr').find('td.wDays').html(data.noOfWorkDays);
+        $(elm).closest('tr').find('td.vDays').html(data.noOfVacationDays);
+    }
+
+    //**********Refresh Vacation Days****************************
+    function updateVacationForEmployee(elm, data) {
+        $("input.vacation").val('');
+        $(elm).closest('tr').find('td.vADays').html(data.noOfVacationDaysAvailed);
+        $(elm).closest('tr').find('td.vDays').html(data.noOfVacationDays);
+    }
+
+    //**********Get Emp Data as JSON****************************
+    function GetEmpData(elm, empType,flag) {
+        var empDetails = {};
+        var empList = [];
+        var idx = $(elm).closest('tr').find('td ').eq(0).html().trim();
+        var number = 0;
+        if (flag == 0) 
+        { 
+            number = $(elm).closest('tr').find('.work').val(); 
+        }
+        else
+        { 
+            number = $(elm).closest('tr').find('.vacation').val();
+        }        
+        
+        var maxDays = $("input[type=hidden].maxWork").val();
+        var maxVDays = 0;
+        switch (empType) {
+            case 0:
+                maxVDays = $("input[type=hidden].maxVac.hEmpl").val();
+                break;
+            case 1:
+                maxVDays = $("input[type=hidden].maxVac.sEmpl").val();
+                break;
+            case 2:
+                maxVDays = $("input[type=hidden].maxVac.mEmpl").val();
+                break;
+        }
+        var fullName = $(elm).closest('tr').find('td.fName').html();
+        var currentDays = $(elm).closest('tr').find('td.wDays').html();
+        var currVacDays = $(elm).closest('tr').find('td.vDays').html();
+        var currVacUsedDays = $(elm).closest('tr').find('td.vADays').html();
+        empDetails["ID"] = idx;
+        empDetails["MaxWorkDays"] = maxDays;
+        empDetails["MaxVacationDays"] = maxVDays;
+        empDetails["NoOfVacationDays"] = currVacDays;
+        empDetails["NoOfWorkDays"] = currentDays;
+        empDetails["NoOfVacationDaysAvailed"] = currVacUsedDays;
+        empDetails["NewDays"] = number;
+        empDetails["EmpType"] = empType;
+        empList.push(empDetails);
+        empList.push(empDetails);
+        return JSON.stringify(empList);
+        }
+
+
+
+    //**********Validate Input Number****************************
+    function validateNumber(elm1, flag, empType) {
+        //Work
+        if (flag == 0) {
+            elm = $(elm1).closest('tr').find('.work');
+            var number = $(elm).val();
+            if (number.length == 0) {
+                alert("Enter a valid number");
+                $(elm).val('');
+            }
+            else if (isNaN(number) == true) {
+                alert("Enter a valid number");
+                $(elm).val('');
+            }
+            else {
+                number = parseInt(number);
+                var maxDays = parseInt($("input[type=hidden].maxWork").val());
+                var currentDays = parseInt($(elm1).closest('tr').find('.wDays').html());
+                if ((number + currentDays) > maxDays) {
+                    alert("Cannot enter  more than " + maxDays + " workdays in a work year");
+                    $(elm).val('');
+                }
+                else if (currentDays >= maxDays) {
+                    alert("Cannot enter  more than " + maxDays + " workdays in a work year"); $(elm).val('');
+                }
+                else {
+                    empAddWork(elm1, empType);
+                }
+            }
+        }
+
+        //Vacation
+        if (flag == 1) {
+            elm = $(elm1).closest('tr').find('.vacation');
+            //if (elm.classList.contains("vacation")==true){
+            var currentWorkDays = parseInt($(elm1).closest('tr').find('.wDays').html());
+
+            var number = $(elm).val();
+            if (number.length == 0) {
+                alert("Enter a valid number");
+                $(elm).val('');
+            }
+            else if (isNaN(number) == true) {
+                alert("Enter a valid number");
+                $(elm).val('');
+            }
+            else if (parseInt(number) == 0) {
+                alert("Enter a valid number");
+                $(elm).val('');
+            }
+            else if (currentWorkDays == 0) { alert("Enter work days before entering vacation days"); $(elm).val(''); }
+            else {
+                var maxDays = 0;
+                switch (empType) {
+                    case 0:
+                        maxDays = $("input[type=hidden].maxVac.hEmpl").val();
+                        break;
+                    case 1:
+                        maxDays = $("input[type=hidden].maxVac.sEmpl").val();
+                        break;
+                    case 2:
+                        maxDays = $("input[type=hidden].maxVac.mEmpl").val();
+                        break;
+                }
+                var currentDays = $(elm).closest('tr').find('.vDays').html();
+                var currentUsedDays = $(elm).closest('tr').find('.vADays').html();
+                maxDays = parseInt(maxDays);
+                currentDays = parseInt(currentDays);
+                number = parseInt(number);
+                currentUsedDays = parseInt(currentUsedDays);
+                if ((currentDays) < number) {
+                    alert("Cannot enter  more vacation than the available " + currentDays + " day(s) in a work year");
+                    $(elm).val('');
+                }
+                else if ((currentUsedDays) >= maxDays) {
+                    alert("Cannot enter  more vacation than " + maxDays + " days in a work year");
+                    $(elm).val('');
+                }
+                else if ((number) > maxDays) {
+                    alert("Cannot enter  more vacation than " + maxDays + " days in a work year");
+                    $(elm).val('');
+                }
+                else if ((number + currentUsedDays) > maxDays) {
+                    alert("Cannot enter  more vacation than " + maxDays + " days in a work year");
+                    $(elm).val('');
+                }
+                else { empAddVacation(elm1, empType); }
+            }
+
+
+
+        }
+    }
+
+</script>
+
